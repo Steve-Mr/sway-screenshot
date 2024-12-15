@@ -56,12 +56,12 @@ function save_geometry() {
 
         # Add shadow to window screenshots
         if [ "$OPTION" == "window" ]; then
-            convert "$output" \( +clone -background black -shadow 80x3+5+5 \) +swap -background none -layers merge +repage "$output"
+            magick "$output" \( +clone -background black -shadow 80x3+5+5 \) +swap -background none -layers merge +repage "$output"
         fi
 
         # Trim transparent pixels, in case the window was floating and partially
         # outside the monitor
-        convert "$output" -trim +repage "$output"
+        magick "$output" -trim +repage "$output"
 
         wl-copy < "$output"
         send_notification "$output"
@@ -69,7 +69,7 @@ function save_geometry() {
             "$COMMAND" "$output"
         }
     else
-        wl-copy < <(grim -g "${1}" - | convert - -trim +repage -)
+        wl-copy < <(grim -g "${1}" - | magick - -trim +repage -)
     fi
 }
 
